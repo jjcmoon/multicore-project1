@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --workdir /scratch/<username>
+#SBATCH --workdir /scratch/ajreynau
 #SBATCH --nodes 1
 #SBATCH --ntasks 1
 #SBATCH --cpus-per-task 1
@@ -7,6 +7,6 @@
 
 echo STARTING AT `date`
 
-./pi 1 100000000
+./integral 1 100000000 0 1
 
 echo FINISHED at `date`

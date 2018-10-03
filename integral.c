@@ -40,9 +40,29 @@ int main (int argc, const char *argv[]) {
 
 
 double integrate (int num_threads, int samples, int a, int b, double (*f)(double)) {
-    double integral;
-
-    /* Your code goes here */
-
-    return integral;
+	double integral;
+	rand_gen rg;
+	double p_integral;
+	double random;
+	integral=0;
+	omp_set_num_threads(num_threads);
+	#pragma omp parallel private(random, p_integral, rg)
+	{
+		p_integral=0;
+		rg=init_rand();
+		#pragma omp for
+		for(int i=0;i<samples;i++){
+			random=next_rand(rg);
+			random=random*(b-a);
+			random+=a;
+			p_integral+=f(random)*(b-a);	
+		}
+		#pragma omp critical
+		{
+		integral+=p_integral;
+		}
+	}
+	integral=integral/samples;
+	free_rand(rg);	
+	return integral;
 }
